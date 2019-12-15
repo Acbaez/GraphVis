@@ -1,2 +1,2 @@
 # GraphVis
-A project for visualizing different graph algorithms. 
+A web application for visualizing different graph algorithms. 
