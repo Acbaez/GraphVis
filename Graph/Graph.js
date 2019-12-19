@@ -19,7 +19,7 @@ class vertex {
 class Graph {
   // Graph Constructor
   constructor() {
-    // Hashmap for graph vertices
+    // Dictionary for graph vertices
     this.places = {};
   }
   // Insert function
@@ -57,39 +57,42 @@ class Graph {
     endNode.neighbors[startNode] = weight;
   }
 
+  // Build function
+  build(inFileVertex, inFilePairs) {
+    // file paths
+    var file_path_vertex = inFileVertex;
+    var file_path_pairs = inFilePairs;
+    // Add cities to graph
+    var data_coordinates = fs.readFileSync(file_path_vertex);
+    data_coordinates = data_coordinates.toString();
+    data_coordinates = data_coordinates.split(/ |\n/);
+    for (var i = 0; i < data_coordinates.length - 3; i += 3) {
+      // add coordinates into graph
+      this.insert(
+        data_coordinates[i],
+        data_coordinates[i + 1],
+        data_coordinates[i + 2]
+      );
+    }
+    var data_pairs = fs.readFileSync(file_path_pairs);
+    data_pairs = data_pairs.toString();
+    data_pairs = data_pairs.split(/ |\n/);
+    for (var i = 0; i < data_pairs.length - 2; i += 2) {
+      // add edges into graph
+      this.insertEdge(data_pairs[i], data_pairs[i + 1]);
+    }
+  }
+
+  // Dijkstra's Algorithm
   shortestWeighted(startPos, endDest){
     return " "; 
   }
 }
 
-// Build function
-function build(inFileVertex, inFilePairs, graph) {
-  // file paths
-  var file_path_vertex = inFileVertex;
-  var file_path_pairs = inFilePairs;
-  // Add cities to graph
-  var data_coordinates = fs.readFileSync(file_path_vertex);
-  data_coordinates = data_coordinates.toString();
-  data_coordinates = data_coordinates.split(/ |\n/);
-  for (var i = 0; i < data_coordinates.length - 3; i += 3) {
-    // add coordinates into graph
-    graph.insert(
-      data_coordinates[i],
-      data_coordinates[i + 1],
-      data_coordinates[i + 2]
-    );
-  }
-  var data_pairs = fs.readFileSync(file_path_pairs);
-  data_pairs = data_pairs.toString();
-  data_pairs = data_pairs.split(/ |\n/);
-  for (var i = 0; i < data_pairs.length - 2; i += 2) {
-    // add edges into graph
-    graph.insertEdge(data_pairs[i], data_pairs[i + 1]);
-  }
-}
+module.exports = vertex; 
 
 // TESTS
 var testGraph = new Graph();
 var file_path1 = "../Data/cityxy.txt";
 var file_path2 = "../Data/citypairs.txt";
-build(file_path1, file_path2, testGraph);
+testGraph.build(file_path1, file_path2);
